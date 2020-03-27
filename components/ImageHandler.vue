@@ -9,7 +9,7 @@
         mdi-close
       </v-icon>
     <v-img
-      max-height="300px"
+      max-height="200px"
       :contain="true"
       :src="getImageUrl()"
     ></v-img>

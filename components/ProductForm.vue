@@ -33,7 +33,7 @@
                   label="Ціна*"
                   type="number"
                   required
-                  @change="$emit('price', ['category', $event])"
+                  @change="$emit('data', ['price', $event])"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="12" class="ma-0 pr-1 pl-0 pt-0 pb-0">
@@ -76,8 +76,21 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="$emit('input', false)">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="onSave">Save</v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="$emit('input', false)"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="$emit('save')"
+            :loading="loading"
+          >
+            Save
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -89,7 +102,7 @@
 
   export default {
     name: "ProductForm",
-    props: ['value'],
+    props: ['value', 'loading'],
     components: {
       ImageHandler
     },
@@ -100,11 +113,16 @@
       images: []
     }),
     methods: {
-      onSave() {
-        this.$emit('save');
-      },
       onImageRemove(index) {
         this.images.splice(index, 1);
+      }
+    },
+    watch: {
+      images: function (val) {
+        this.$emit('data', ['images', val])
+      },
+      image: function (val) {
+        this.$emit('data', ['thumb', val])
       }
     }
   }
