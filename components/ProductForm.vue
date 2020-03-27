@@ -36,7 +36,7 @@
                   @change="$emit('data', ['price', $event])"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="12" class="ma-0 pr-1 pl-0 pt-0 pb-0">
+              <v-col cols="12" sm="12" class="ma-0 pa-0">
                 <v-file-input
                   accept="image/*"
                   single
@@ -49,7 +49,7 @@
                   :single="true"
                 ></image-handler>
               </v-col>
-              <v-col cols="12" sm="12" class="ma-0 pl-1 pr-0 pt-0 pb-0">
+              <v-col cols="12" sm="12" class="ma-0 pa-0">
                 <v-file-input
                   accept="image/*"
                   multiple
@@ -119,7 +119,7 @@
     },
     watch: {
       images: function (val) {
-        this.$emit('data', ['images', val])
+        this.$emit('data', ['images', [...val]])
       },
       image: function (val) {
         this.$emit('data', ['thumb', val])

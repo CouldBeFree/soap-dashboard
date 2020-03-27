@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{details}}
     <v-btn
       class="mx-2 mt-2"
       fab
@@ -23,6 +22,19 @@
         <p class="mb-0" v-else>Створити новий продукт</p>
       </template>
     </product-form>
+    <v-snackbar
+      v-model="snackbar"
+      :color="error ? 'error' : 'success'"
+      :timeout="5000"
+    >
+      {{ error ? error : success }}
+      <v-btn
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -33,7 +45,8 @@ import ProductForm from "../components/ProductForm";
 export default {
   data: () => ({
     isOpen: false,
-    loading: false
+    loading: false,
+    snackbar: false
   }),
   components: {
     ProductForm
@@ -44,12 +57,16 @@ export default {
     async onSubmit() {
       this.loading = true;
       await this.saveProduct();
+      this.snackbar = true;
+      this.isOpen = false;
       this.loading = false;
     }
   },
   computed: {
     ...mapState('products', {
-      details: state => state.details
+      details: state => state.details,
+      error: state => state.error,
+      success: state => state.success
     })
   }
 }

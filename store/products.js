@@ -3,7 +3,8 @@ import Vue from 'vue';
 export const state = () => ({
   products: [],
   details: {},
-  error: ''
+  error: null,
+  success: null
 });
 
 export const mutations = {
@@ -12,11 +13,16 @@ export const mutations = {
   },
   setError(state, error) {
     state.error = error
+  },
+  setSuccess(state, success) {
+    state.success = success
   }
 };
 
 export const actions = {
   async saveProduct({ commit, state }) {
+    commit('setSuccess', false);
+    commit('setError', false);
     try {
       const fd = new FormData();
       const { images, thumb, price, category, name } = state.details;
