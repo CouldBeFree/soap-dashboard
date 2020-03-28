@@ -12,10 +12,13 @@ export const mutations = {
     Vue.set(state.details, param, value);
   },
   setError(state, error) {
-    state.error = error
+    state.error = error;
   },
   setSuccess(state, success) {
-    state.success = success
+    state.success = success;
+  },
+  setProducts(state, products) {
+    state.products = products;
   }
 };
 
@@ -35,6 +38,15 @@ export const actions = {
       }
       await this.$axios.post('/product', fd);
     } catch ({ message }) {
+      console.error(message);
+      commit('setError', message);
+    }
+  },
+  async getProducts({ commit }) {
+    try {
+      const { data } = await this.$axios.get('/product');
+      commit('setProducts', data.data);
+    } catch({ message }) {
       console.error(message);
       commit('setError', message);
     }

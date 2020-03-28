@@ -11,6 +11,19 @@
     >
       <v-icon dark>mdi-plus</v-icon>
     </v-btn>
+    <v-row>
+      <v-col
+        v-for="product in products"
+        :key="product._id"
+        cols="12"
+        sm="4"
+      >
+        <product
+          :product="product"
+        >
+        </product>
+      </v-col>
+    </v-row>
     <product-form
       v-model="isOpen"
       @data="setDetailsParam"
@@ -41,6 +54,7 @@
 <script>
 import { mapMutations, mapState, mapActions } from 'vuex';
 import ProductForm from "../components/ProductForm";
+import Product from '../components/Product';
 
 export default {
   data: () => ({
@@ -49,11 +63,12 @@ export default {
     snackbar: false
   }),
   components: {
-    ProductForm
+    ProductForm,
+    Product
   },
   methods: {
     ...mapMutations('products', ['setDetailsParam']),
-    ...mapActions('products', ['saveProduct']),
+    ...mapActions('products', ['saveProduct', 'getProducts']),
     async onSubmit() {
       this.loading = true;
       await this.saveProduct();
@@ -62,11 +77,15 @@ export default {
       this.loading = false;
     }
   },
+  async mounted() {
+    await this.getProducts();
+  },
   computed: {
     ...mapState('products', {
       details: state => state.details,
       error: state => state.error,
-      success: state => state.success
+      success: state => state.success,
+      products: state => state.products
     })
   }
 }
