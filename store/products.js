@@ -33,8 +33,10 @@ export const actions = {
       fd.append('name', name);
       fd.append('price', price);
       fd.append('category', category);
-      for(let i = 0; i < images.length; i++) {
-        fd.append('images', images[i]);
+      if(images){
+        for(let i = 0; i < images.length; i++) {
+          fd.append('images', images[i]);
+        }
       }
       await this.$axios.post('/product', fd);
       commit('setSuccess', 'Product saved');
@@ -48,6 +50,17 @@ export const actions = {
       const { data } = await this.$axios.get('/product');
       commit('setProducts', data.data);
     } catch({ message }) {
+      console.error(message);
+      commit('setError', message);
+    }
+  },
+  async removeProduct({ commit }, id) {
+    commit('setSuccess', false);
+    commit('setError', false);
+    try {
+      await this.$axios.delete(`/product/${id}`);
+      commit('setSuccess', 'Product removed');
+    } catch ({ message }) {
       console.error(message);
       commit('setError', message);
     }

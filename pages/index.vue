@@ -6,7 +6,9 @@
       dark
       color="info"
       :right="true"
-      absolute
+      :class="{sticky: sticky}"
+      style="transition: .9s"
+      fixed
       @click="isOpen = !isOpen"
     >
       <v-icon dark>mdi-plus</v-icon>
@@ -16,10 +18,11 @@
         v-for="product in products"
         :key="product._id"
         cols="12"
-        sm="4"
+        sm="2"
       >
         <product
           :product="product"
+          @remove="onRemove"
         >
         </product>
       </v-col>
@@ -48,6 +51,32 @@
         Close
       </v-btn>
     </v-snackbar>
+    <v-dialog
+      v-model="dialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title>Ви впевнені що хочете видалити цей продукт?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="info"
+            text
+            @click="dialog = false"
+          >
+            Відмінити
+          </v-btn>
+          <v-btn
+            color="info"
+            text
+            @click="onProductRemove"
+            :loading="loading"
+          >
+            Видалити
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -60,7 +89,10 @@ export default {
   data: () => ({
     isOpen: false,
     loading: false,
-    snackbar: false
+    snackbar: false,
+    sticky: false,
+    dialog: false,
+    productId: ''
   }),
   components: {
     ProductForm,
@@ -68,7 +100,7 @@ export default {
   },
   methods: {
     ...mapMutations('products', ['setDetailsParam']),
-    ...mapActions('products', ['saveProduct', 'getProducts']),
+    ...mapActions('products', ['saveProduct', 'getProducts', 'removeProduct']),
     async onSubmit() {
       this.loading = true;
       await this.saveProduct();
@@ -76,10 +108,28 @@ export default {
       this.snackbar = true;
       this.isOpen = false;
       this.loading = false;
+    },
+    handleScroll() {
+      this.sticky = window.pageYOffset > 60 ? true : false;
+    },
+    async onProductRemove() {
+      this.loading = true;
+      await this.removeProduct(this.productId);
+      await this.getProducts();
+      this.dialog = false;
+      this.loading = false;
+    },
+    onRemove(id) {
+      this.productId = id;
+      this.dialog = true;
     }
   },
   async mounted() {
+    window.addEventListener('scroll', this.handleScroll);
     await this.getProducts();
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   computed: {
     ...mapState('products', {
@@ -88,6 +138,13 @@ export default {
       success: state => state.success,
       products: state => state.products
     })
-  }
+  },
 }
 </script>
+
+<style scoped>
+  .sticky {
+    top: 0;
+    transition: .8s;
+  }
+</style>

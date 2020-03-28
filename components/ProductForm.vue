@@ -126,8 +126,10 @@
         this.images.splice(index, 1);
       },
       onSubmit() {
-        this.$refs.form.validate();
-        this.$emit('save');
+        if(this.$refs.form.validate()) {
+          this.$emit('save');
+          this.$refs.form.reset();
+        }
       },
       onClose() {
         this.$refs.form.resetValidation();
