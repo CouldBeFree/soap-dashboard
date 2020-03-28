@@ -37,6 +37,7 @@ export const actions = {
         fd.append('images', images[i]);
       }
       await this.$axios.post('/product', fd);
+      commit('setSuccess', 'Product saved');
     } catch ({ message }) {
       console.error(message);
       commit('setError', message);

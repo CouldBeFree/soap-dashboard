@@ -11,7 +11,7 @@
       >
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Title</v-toolbar-title>
+        <v-toolbar-title>Soap dashboard</v-toolbar-title>
       </v-app-bar>
 
       <v-navigation-drawer

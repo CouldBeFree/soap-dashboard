@@ -72,6 +72,7 @@ export default {
     async onSubmit() {
       this.loading = true;
       await this.saveProduct();
+      await this.getProducts();
       this.snackbar = true;
       this.isOpen = false;
       this.loading = false;
