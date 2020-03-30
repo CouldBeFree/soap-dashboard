@@ -18,11 +18,13 @@
         v-for="product in products"
         :key="product._id"
         cols="12"
-        sm="2"
+        sm="4"
+        md="2"
       >
         <product
           :product="product"
           @remove="onRemove"
+          @edit="onEdit"
         >
         </product>
       </v-col>
@@ -32,6 +34,7 @@
       @data="setDetailsParam"
       @save="onSubmit"
       :loading="loading"
+      :product="details"
     >
       <template v-slot:title>
         <p class="mb-0" v-if="details._id">Редагувати продукт</p>
@@ -100,7 +103,7 @@ export default {
   },
   methods: {
     ...mapMutations('products', ['setDetailsParam']),
-    ...mapActions('products', ['saveProduct', 'getProducts', 'removeProduct']),
+    ...mapActions('products', ['saveProduct', 'getProducts', 'removeProduct', 'getProduct']),
     async onSubmit() {
       this.loading = true;
       await this.saveProduct();
@@ -122,6 +125,10 @@ export default {
     onRemove(id) {
       this.productId = id;
       this.dialog = true;
+    },
+    async onEdit(id) {
+      await this.getProduct(id);
+      this.isOpen = true;
     }
   },
   async mounted() {

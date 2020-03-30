@@ -1,7 +1,6 @@
 <template>
   <div>
       <v-icon
-        v-if="index > -1"
         color="grey lighten-1"
         x-small
         @click="onImageRemove"
@@ -19,7 +18,7 @@
 <script>
   export default {
     name: "ImageUpload",
-    props: ['image', 'index'],
+    props: ['image', 'index', 'value'],
     data: () => ({
       src: '',
     }),
@@ -28,8 +27,10 @@
         this.$emit('remove', this.index)
       },
       getImageUrl () {
-        if(this.image) {
+        if(this.image && !this.image.url) {
           return this.src = window.URL.createObjectURL(this.image);
+        } else {
+          return this.src = `http://localhost:5050/${this.image.url}`
         }
       }
     }

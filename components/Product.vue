@@ -17,6 +17,12 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
+        @click="$emit('edit', product._id)"
+        icon
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <v-btn
         @click="$emit('remove', product._id)"
         icon
       >

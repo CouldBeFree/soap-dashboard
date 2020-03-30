@@ -19,6 +19,9 @@ export const mutations = {
   },
   setProducts(state, products) {
     state.products = products;
+  },
+  setDetails(state, details) {
+    state.details = details;
   }
 };
 
@@ -63,6 +66,16 @@ export const actions = {
     } catch ({ message }) {
       console.error(message);
       commit('setError', message);
+    }
+  },
+  async getProduct({ commit }, id) {
+    commit('setError', false);
+    try {
+      const { data } = await this.$axios.get(`/product/${id}`);
+      commit('setDetails', data.data);
+    } catch ({ message }) {
+      console.error(message);
+      commit('setError', message)
     }
   }
 };
