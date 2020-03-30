@@ -46,6 +46,13 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" class="ma-0 pa-0">
+                  <image-upload
+                    :single="true"
+                    :value="product.thumb"
+                    @data="$emit('data', $event)"
+                  ></image-upload>
+                </v-col>
+                <!--<v-col cols="12" sm="12" class="ma-0 pa-0">
                   <v-file-input
                     accept="image/*"
                     single
@@ -81,7 +88,7 @@
                     :multiple="true"
                     @remove="onImageRemove"
                   ></image-handler>
-                </v-col>
+                </v-col>-->
               </v-row>
             </v-form>
           </v-container>
@@ -111,13 +118,13 @@
 </template>
 
 <script>
-  import ImageHandler from "./ImageHandler";
+  import ImageUpload from "./ImageUpload";
 
   export default {
     name: "ProductForm",
     props: ['value', 'loading', 'product'],
     components: {
-      ImageHandler
+      ImageUpload
     },
     data: () => ({
       dialog: false,
