@@ -63,13 +63,13 @@
       getImageUrl () {
         if(this.value && this.value.url) {
           return `http://localhost:5050/${this.value.url}`;
-        } else if(this.value.length > 0) {
+        } else if(this.value && this.value.length > 0) {
           return window.URL.createObjectURL(this.value[0]);
         }
       },
       onFileSelect(val) {
         if(this.single) {
-          this.$emit('data', ['thumb', val]);
+          this.$emit('data', ['thumb', val[0]]);
         }
       }
     },
