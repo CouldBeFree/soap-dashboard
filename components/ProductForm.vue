@@ -52,6 +52,13 @@
                     @data="$emit('data', $event)"
                   ></image-upload>
                 </v-col>
+                <v-col cols="12" sm="12" class="ma-0 pa-0">
+                  <image-upload
+                    :single="false"
+                    :value="product.images"
+                    @data="$emit('data', $event)"
+                  ></image-upload>
+                </v-col>
                 <!--<v-col cols="12" sm="12" class="ma-0 pa-0">
                   <v-file-input
                     accept="image/*"

@@ -102,7 +102,7 @@ export default {
     Product
   },
   methods: {
-    ...mapMutations('products', ['setDetailsParam']),
+    ...mapMutations('products', ['setDetailsParam', 'setDetails']),
     ...mapActions('products', ['saveProduct', 'getProducts', 'removeProduct', 'getProduct']),
     async onSubmit() {
       this.loading = true;
@@ -146,6 +146,13 @@ export default {
       products: state => state.products
     })
   },
+  watch: {
+    isOpen(val) {
+      if(val !== true) {
+        this.setDetails({})
+      }
+    }
+  }
 }
 </script>
 
