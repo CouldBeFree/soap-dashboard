@@ -134,6 +134,12 @@ export default {
   async mounted() {
     window.addEventListener('scroll', this.handleScroll);
     await this.getProducts();
+    window.addEventListener('popstate', function(e){
+      console.log('popstate', e);
+    }, false);
+    window.addEventListener('onpopstate', function(e){
+      console.log('onpopstate', e);
+    }, false);
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);

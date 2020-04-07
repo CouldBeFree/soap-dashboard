@@ -32,17 +32,24 @@ export const actions = {
     try {
       const fd = new FormData();
       const { images, thumb, price, category, name } = state.details;
-      fd.append('thumb', thumb);
+      fd.append('thumb', thumb.url);
       fd.append('name', name);
       fd.append('price', price);
       fd.append('category', category);
       if(images){
         for(let i = 0; i < images.length; i++) {
-          fd.append('images', images[i]);
+          if(!images[i]._id) {
+            fd.append('images', images[i]);
+          }
         }
       }
-      await this.$axios.post('/product', fd);
-      commit('setSuccess', 'Product saved');
+      if(state.details._id) {
+        await this.$axios.put(`/product/${state.details._id}`, fd);
+        commit('setSuccess', 'Product edited');
+      } else {
+        await this.$axios.post('/product', fd);
+        commit('setSuccess', 'Product saved');
+      }
     } catch ({ message }) {
       console.error(message);
       commit('setError', message);
