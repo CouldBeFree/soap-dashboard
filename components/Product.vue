@@ -3,7 +3,7 @@
     <nuxt-link :to="`product/${product._id}`" style="text-decoration: none;">
       <v-img
         style="cursor: pointer;"
-        :src="`http://localhost:5050/${product.thumb.url}`"
+        :src="product.thumb.url ? `http://localhost:5050/${product.thumb.url}` : image"
         :lazy-src="image"
         class="white&#45;&#45;text align-end"
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -52,7 +52,17 @@
     methods: {
       convertCategory(category) {
         return categories[category]
+      },
+      imageUrl() {
+        if (this.product && this.product.thumb.url) {
+          return `http://localhost:5050/${product.thumb.url}`
+        } else {
+          return this.image;
+        }
       }
+    },
+    computed: {
+
     }
   }
 </script>
