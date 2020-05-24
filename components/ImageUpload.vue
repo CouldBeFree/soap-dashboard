@@ -57,6 +57,9 @@
     data: () => ({
       src: ''
     }),
+    mounted() {
+      console.info('value', this.value);
+    },
     methods: {
       onImageRemove (index) {
         if(index > -1) {
@@ -94,7 +97,7 @@
     computed: {
       isMultiple() {
         return !!this.single;
-      },
+      }
     }
   }
 </script>

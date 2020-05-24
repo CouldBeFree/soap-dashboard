@@ -165,7 +165,7 @@
         this.$emit('data', ['images', [...val]])
       },
       image: function (val) {
-        this.$emit('data', ['thumb', val])
+        this.$emit('data', ['thumb', [...val]])
       }
     }
   }

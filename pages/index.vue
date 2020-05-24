@@ -112,9 +112,6 @@ export default {
       this.isOpen = false;
       this.loading = false;
     },
-    handleScroll() {
-      this.sticky = window.pageYOffset > 60 ? true : false;
-    },
     async onProductRemove() {
       this.loading = true;
       await this.removeProduct(this.productId);
@@ -132,14 +129,7 @@ export default {
     }
   },
   async mounted() {
-    window.addEventListener('scroll', this.handleScroll);
     await this.getProducts();
-    window.addEventListener('popstate', function(e){
-      console.log('popstate', e);
-    }, false);
-    window.addEventListener('onpopstate', function(e){
-      console.log('onpopstate', e);
-    }, false);
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
