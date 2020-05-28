@@ -36,22 +36,18 @@ export const actions = {
       fd.append('name', name);
       fd.append('price', price);
       fd.append('category', category);
-      fd.append('images', images);
-      console.log(images);
-      /*if(images){
+      if(images){
         for(let i = 0; i < images.length; i++) {
-          if(!images[i]._id) {
-            fd.append('images', images[i]);
+          if(images[i].url) {
+            const stringifiedImage = JSON.stringify(images[i]);
+            fd.append('images', stringifiedImage);
           } else {
-            fd.append('images', images);
+            fd.append('images', images[i]);
           }
         }
-      }*/
+      }
       if(state.details._id) {
-        for (let [key, value] of fd.entries()) {
-          console.log(key, ':', value);
-        }
-        await this.$axios.put(`/product/${state.details._id}`, fd);
+        await this.$axios.put(`/product/${state.details._id}`, fd, { headers: { 'content-type': 'multipart/form-data' } });
         commit('setSuccess', 'Product edited');
       } else {
         await this.$axios.post('/product', fd);
