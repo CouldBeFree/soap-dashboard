@@ -10,6 +10,7 @@ export const state = () => ({
 export const mutations = {
   setDetailsParam (state, [param, value]) {
     Vue.set(state.details, param, value);
+    console.log(state.details);
   },
   setError(state, error) {
     state.error = error;

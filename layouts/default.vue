@@ -11,7 +11,9 @@
       >
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Soap dashboard</v-toolbar-title>
+        <v-toolbar-title>
+          <nuxt-link :to="'/'" class="link">Soap dashboard</nuxt-link>
+        </v-toolbar-title>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -63,3 +65,9 @@
     }
   }
 </script>
+<style scoped>
+  .link {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
