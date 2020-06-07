@@ -27,7 +27,7 @@
                 </v-col>
                 <v-col cols="12" sm="6" class="ma-0 pr-1 pl-0 pt-0 pb-0">
                   <v-select
-                    :value="product.category"
+                    :value="selectedCategory"
                     :items="category"
                     label="Категорія*"
                     :rules="[v => !!v || 'Виберіть категорію']"
@@ -89,15 +89,15 @@
 
 <script>
   import ImageUpload from "./ImageUpload";
-  /*const categories = {
+  const categoriesEng = {
     'woman': 'жіноче',
     'man': 'чоловіче',
     'baby-soap': 'дитяче',
     'bouquets': 'букети',
     'kits': 'набори',
     'natural': 'натуральне'
-  };*/
-  const categories = {
+  };
+  const categoriesUkr = {
     'жіноче': 'woman',
     'чоловіче': 'man',
     'дитяче': 'baby-soap',
@@ -120,7 +120,6 @@
     }),
     methods: {
       onImageRemove(index) {
-        alert(index);
         if (!this.index) {
           this.$emit('data', ['thumb', null])
         } else {
@@ -139,7 +138,12 @@
         this.$emit('input', false);
       },
       categorySelect(category) {
-        this.$emit('data', ['category', categories[category]]);
+        this.$emit('data', ['category', categoriesUkr[category]]);
+      }
+    },
+    computed: {
+      selectedCategory() {
+        return categoriesEng[this.product.category]
       }
     },
     watch: {
