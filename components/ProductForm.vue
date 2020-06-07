@@ -27,12 +27,12 @@
                 </v-col>
                 <v-col cols="12" sm="6" class="ma-0 pr-1 pl-0 pt-0 pb-0">
                   <v-select
-                    :value="product.category"
+                    :value="selectedCategory"
                     :items="category"
                     label="Категорія*"
                     :rules="[v => !!v || 'Виберіть категорію']"
                     required
-                    @change="$emit('data', ['category', $event])"
+                    @change="categorySelect"
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" class="ma-0 pl-1 pr-0 pt-0 pb-0">
@@ -59,43 +59,6 @@
                     @data="$emit('data', $event)"
                   ></image-upload>
                 </v-col>
-                <!--<v-col cols="12" sm="12" class="ma-0 pa-0">
-                  <v-file-input
-                    accept="image/*"
-                    single
-                    label="Головна картинка*"
-                    :rules="[v => !!v || 'Виберіть картинку']"
-                    required
-                    v-model="image"
-                  ></v-file-input>
-                  <image-handler
-                    @remove="onImageRemove"
-                    v-if="image || product.thumb"
-                    :image="image || product.thumb"
-                    :single="true"
-                  ></image-handler>
-                </v-col>
-                <v-col cols="12" sm="12" class="ma-0 pa-0">
-                  <v-file-input
-                    accept="image/*"
-                    multiple
-                    label="Картинки товарів"
-                    v-model="images"
-                  ></v-file-input>
-                </v-col>
-                <v-col
-                  v-if="images.length > 0"
-                  cols="3"
-                  xs="3"
-                  v-for="(image, index) in (images.length > 0 ? images : product.images)"
-                >
-                  <image-handler
-                    :image="image"
-                    :index="index"
-                    :multiple="true"
-                    @remove="onImageRemove"
-                  ></image-handler>
-                </v-col>-->
               </v-row>
             </v-form>
           </v-container>
@@ -126,6 +89,22 @@
 
 <script>
   import ImageUpload from "./ImageUpload";
+  const categoriesEng = {
+    'woman': 'жіноче',
+    'man': 'чоловіче',
+    'baby-soap': 'дитяче',
+    'bouquets': 'букети',
+    'kits': 'набори',
+    'natural': 'натуральне'
+  };
+  const categoriesUkr = {
+    'жіноче': 'woman',
+    'чоловіче': 'man',
+    'дитяче': 'baby-soap',
+    'букети': 'bouquets',
+    'набори': 'kits',
+    'натуральне': 'natural'
+  };
 
   export default {
     name: "ProductForm",
@@ -135,13 +114,12 @@
     },
     data: () => ({
       dialog: false,
-      category: ['woman', 'man', 'baby-soap', 'bouquets', 'kits', 'natural'],
+      category: ['жіноче', 'чоловіче', 'дитяче', 'букети', 'набори', 'натуральне'],
       image: null,
       images: []
     }),
     methods: {
       onImageRemove(index) {
-        alert(index);
         if (!this.index) {
           this.$emit('data', ['thumb', null])
         } else {
@@ -158,6 +136,14 @@
         this.$refs.form.resetValidation();
         this.$refs.form.reset();
         this.$emit('input', false);
+      },
+      categorySelect(category) {
+        this.$emit('data', ['category', categoriesUkr[category]]);
+      }
+    },
+    computed: {
+      selectedCategory() {
+        return categoriesEng[this.product.category]
       }
     },
     watch: {
