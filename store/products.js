@@ -35,7 +35,6 @@ export const actions = {
       fd.append('thumb', thumb);
       fd.append('name', name);
       fd.append('price', price);
-
       fd.append('category', category);
       if(images){
         for(let i = 0; i < images.length; i++) {
