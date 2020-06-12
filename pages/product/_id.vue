@@ -32,13 +32,31 @@
           outlined
           light
         >
-          <v-card-title class="pa-0">Картинки товару</v-card-title>
-          <div class="grid-container">
-            <div class="item" v-for="i in 19" :key="i"></div>
-            <div class="upload-button">
-              <input type="file" id="file" accept="image/*">
-              <label class="upload-label" for="file">Завантажити картинку</label>
+          <v-card-title class="pa-0 mb-3">Картинки товару</v-card-title>
+          <div :class="{ 'grid-container': images.length > 0 }">
+            <div class="item" v-for="(image, index) in images" :key="index">
+              <v-img
+                :src="image"
+                :height="height(index)"
+                :max-width="width(index)"
+                :contain="index === 0 ? false : true"
+              ></v-img>
             </div>
+            <div class="upload-button">
+              <input @change="onUploadImage" type="file" id="file" multiple accept="image/*">
+              <label class="upload-label" for="file">Завантажити зображення</label>
+            </div>
+          </div>
+          <div class="d-flex justify-sm-end">
+            <v-btn
+              @click="onSave"
+              right
+              color="primary"
+              medium
+              class="mt-4"
+            >
+              Save
+            </v-btn>
           </div>
         </v-card>
       </v-col>
@@ -64,15 +82,34 @@
     name: "product",
     data: () => ({
       category: ['жіноче', 'чоловіче', 'дитяче', 'букети', 'набори', 'натуральне'],
-      editor: ClassicEditor
+      editor: ClassicEditor,
+      images: []
     }),
     async mounted() {
       await this.getProduct(this.$route.params.id);
     },
     methods: {
       ...mapActions('products', ['getProduct']),
+      height(index) {
+        return index === 0 ? '100%' : '110px';
+      },
+      width(index) {
+        return index === 0 ? '100%' : '110px'
+      },
+      contain(index) {
+        return index === 0 ? true : false
+      },
       onEditorUpdate(val) {
 
+      },
+      onUploadImage(ev) {
+        const arr = Array.from(ev.target.files);
+        arr.forEach(el => {
+          this.images.push(window.URL.createObjectURL(el));
+        });
+      },
+      onSave() {
+        console.log(this.images);
       }
     },
     computed: {
@@ -97,22 +134,29 @@
 
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(5,1fr);
-    grid-gap: .8rem;
+    grid-template-columns: repeat(6,1fr);
+    grid-gap: 15px;
+    min-height: 220px;
   }
 
-  .item {
-    border: 1px solid red;
+  .grid-container .item {
+    border: 1px solid #dfe3e8;
     border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .item:first-child {
-    grid-column: 1/span 2;
-    grid-row: 1/span 2;
+  .grid-container .item:first-child {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: span 2;
     height: 100%;
+    max-height: 235px;
   }
 
-  .item:not(:first-child) {
+  .grid-container .item:not(:first-child) {
     height: 110px;
   }
 
@@ -126,15 +170,24 @@
     overflow: hidden;
   }
 
+  .grid-container .upload-button {
+    height: 110px;
+  }
+
   input[type="file"] {
     display: none;
   }
 
   .upload-label {
-    width: 100%;
-    height: 100%;
+    height: 235px;
     display: flex;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
+    width: 100%;
+  }
+
+  .grid-container .upload-label {
+    height: 100%;
   }
 </style>
