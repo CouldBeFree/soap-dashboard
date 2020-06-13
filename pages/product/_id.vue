@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-row>
-      <v-col lg="3"/>
-      <v-col lg="6">
+      <v-col md="2" lg="2"/>
+      <v-col md="9"  lg="9">
         <v-card
           class="pa-6"
           outlined
@@ -32,25 +32,31 @@
           outlined
           light
         >
-          <v-card-title class="pa-0 mb-3">Картинки товару</v-card-title>
+          <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
+          <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
           <div>
             <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
               <div class="item" v-for="(image, index) in images" :key="index">
-                <v-img
-                  :src="image"
-                  :height="height(index)"
-                  :max-width="width(index)"
-                  :contain="index === 0 ? false : true"
-                >
-                  <div class="checkbox-holder" :class="{ first: index === 0 }">
-                    <v-checkbox
-                      dense
-                      hide-details
-                      absolute
-                      right
-                    ></v-checkbox>
-                  </div>
-                </v-img>
+                <v-hover v-slot:default="{ hover }">
+                  <v-img
+                    :src="image.url"
+                    :height="height(index)"
+                    :max-width="width(index)"
+                    :contain="index === 0 ? false : true"
+                  >
+                    <v-expand-transition>
+                      <div class="checkbox-holder" :class="{ first: index === 0 }">
+                        <v-checkbox
+                          v-show="hover || image.checked"
+                          @change="changeHandler(index)"
+                          :input-value="image.checked"
+                          dense
+                          hide-details
+                        ></v-checkbox>
+                      </div>
+                    </v-expand-transition>
+                  </v-img>
+                </v-hover>
               </div>
               <div class="upload-button">
                 <input @change="onUploadImage" type="file" id="file" multiple accept="image/*">
@@ -71,7 +77,7 @@
           </div>
         </v-card>
       </v-col>
-      <v-col lg="3"/>
+      <v-col md="2" lg="2"/>
     </v-row>
   </div>
 </template>
@@ -94,15 +100,30 @@
     data: () => ({
       category: ['жіноче', 'чоловіче', 'дитяче', 'букети', 'набори', 'натуральне'],
       editor: ClassicEditor,
-      images: []
+      images: [],
+      selectedImages: []
     }),
     async mounted() {
       await this.getProduct(this.$route.params.id);
     },
     methods: {
       ...mapActions('products', ['getProduct']),
+      removeImages() {
+        this.images = this.images.filter((objFromA) => {
+          return !this.selectedImages.find((objFromB) => {
+            return objFromA.id === objFromB.id
+          });
+        });
+        this.selectedImages = [];
+      },
       height(index) {
         return index === 0 ? '100%' : '110px';
+      },
+      changeHandler(index) {
+        this.images[index].checked = !this.images[index].checked;
+        this.selectedImages = this.images.filter((el) => {
+          return el.checked === true;
+        });
       },
       width(index) {
         return index === 0 ? '100%' : '110px'
@@ -115,8 +136,12 @@
       },
       onUploadImage(ev) {
         const arr = Array.from(ev.target.files);
-        arr.forEach(el => {
-          this.images.push(window.URL.createObjectURL(el));
+        arr.forEach((el, index) => {
+          const obj = {};
+          obj.id = index;
+          obj.url = window.URL.createObjectURL(el);
+          obj.checked = false;
+          this.images.push(obj);
         });
       },
       onSave() {
@@ -149,13 +174,18 @@
   }
 
   .checkbox-holder .v-input {
-    left: 80px;
-    bottom: 15px;
-    position: relative;
+    right: -15px;
+    top: -10px;
+    position: absolute;
+    z-index: 100;
+  }
+
+  .v-responsive {
+    overflow: unset;
   }
 
   .checkbox-holder.first .v-input {
-    left: 60px;
+    right: 0;
   }
 
   .grid-container {
@@ -169,6 +199,9 @@
     border: 1px solid #dfe3e8;
     border-radius: 3px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .grid-container .item:first-child {
