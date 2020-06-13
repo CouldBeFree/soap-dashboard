@@ -34,14 +34,23 @@
         >
           <v-card-title class="pa-0 mb-3">Картинки товару</v-card-title>
           <div>
-            <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }">
+            <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
               <div class="item" v-for="(image, index) in images" :key="index">
                 <v-img
                   :src="image"
                   :height="height(index)"
                   :max-width="width(index)"
                   :contain="index === 0 ? false : true"
-                ></v-img>
+                >
+                  <div class="checkbox-holder" :class="{ first: index === 0 }">
+                    <v-checkbox
+                      dense
+                      hide-details
+                      absolute
+                      right
+                    ></v-checkbox>
+                  </div>
+                </v-img>
               </div>
               <div class="upload-button">
                 <input @change="onUploadImage" type="file" id="file" multiple accept="image/*">
@@ -134,6 +143,21 @@
     color: rgba(0, 0, 0, 0.6);
   }
 
+  .checkbox-holder {
+    display: flex;
+    justify-content: right;
+  }
+
+  .checkbox-holder .v-input {
+    left: 80px;
+    bottom: 15px;
+    position: relative;
+  }
+
+  .checkbox-holder.first .v-input {
+    left: 60px;
+  }
+
   .grid-container {
     display: grid;
     grid-template-columns: repeat(6,1fr);
@@ -144,9 +168,7 @@
   .grid-container .item {
     border: 1px solid #dfe3e8;
     border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    cursor: pointer;
   }
 
   .grid-container .item:first-child {
