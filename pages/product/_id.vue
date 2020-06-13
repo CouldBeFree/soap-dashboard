@@ -33,19 +33,21 @@
           light
         >
           <v-card-title class="pa-0 mb-3">Картинки товару</v-card-title>
-          <div :class="{ 'grid-container': images.length > 0 }">
-            <div class="item" v-for="(image, index) in images" :key="index">
-              <v-img
-                :src="image"
-                :height="height(index)"
-                :max-width="width(index)"
-                :contain="index === 0 ? false : true"
-              ></v-img>
-            </div>
-            <div class="upload-button">
-              <input @change="onUploadImage" type="file" id="file" multiple accept="image/*">
-              <label class="upload-label" for="file">Завантажити зображення</label>
-            </div>
+          <div>
+            <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }">
+              <div class="item" v-for="(image, index) in images" :key="index">
+                <v-img
+                  :src="image"
+                  :height="height(index)"
+                  :max-width="width(index)"
+                  :contain="index === 0 ? false : true"
+                ></v-img>
+              </div>
+              <div class="upload-button">
+                <input @change="onUploadImage" type="file" id="file" multiple accept="image/*">
+                <label class="upload-label" for="file">Завантажити зображення</label>
+              </div>
+            </draggable>
           </div>
           <div class="d-flex justify-sm-end">
             <v-btn
@@ -154,6 +156,7 @@
     grid-row-end: span 2;
     height: 100%;
     max-height: 235px;
+    /*width: 100px;*/
   }
 
   .grid-container .item:not(:first-child) {
