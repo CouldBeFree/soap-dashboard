@@ -33,6 +33,7 @@
           light
         >
           <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
+          <v-btn v-if="selectedImages.length" @click="selectAll" class="mb-2" small color="primary">Обрати всі</v-btn>
           <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
           <div>
             <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
@@ -108,10 +109,16 @@
     },
     methods: {
       ...mapActions('products', ['getProduct']),
+      selectAll() {
+        this.images.forEach(el => {
+          el.checked = true
+        });
+        this.selectedImages = [...this.images];
+      },
       removeImages() {
-        this.images = this.images.filter((objFromA) => {
-          return !this.selectedImages.find((objFromB) => {
-            return objFromA.id === objFromB.id
+        this.images = this.images.filter((image) => {
+          return !this.selectedImages.find((selectedImage) => {
+            return image.id === selectedImage.id
           });
         });
         this.selectedImages = [];
