@@ -64,7 +64,7 @@
     methods: {
       ...mapActions('products', ['getProduct']),
       onEditorUpdate(val) {
-
+        console.log(val);
       }
     },
     computed: {

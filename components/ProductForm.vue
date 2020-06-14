@@ -7,7 +7,7 @@
     >
       <v-card color="accent">
         <v-card-title class="pb-0">
-          <slot name="title"></slot>
+          <p class="mb-0">Створити новий продукт</p>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -44,20 +44,6 @@
                     required
                     @change="$emit('data', ['price', $event])"
                   ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="12" class="ma-0 pa-0">
-                  <image-upload
-                    :single="true"
-                    :value="product.thumb"
-                    @data="$emit('data', $event)"
-                  ></image-upload>
-                </v-col>
-                <v-col cols="12" sm="12" class="ma-0 pa-0">
-                  <image-upload
-                    :single="false"
-                    :value="product.images"
-                    @data="$emit('data', $event)"
-                  ></image-upload>
                 </v-col>
               </v-row>
             </v-form>
@@ -119,13 +105,6 @@
       images: []
     }),
     methods: {
-      onImageRemove(index) {
-        if (!this.index) {
-          this.$emit('data', ['thumb', null])
-        } else {
-          this.images.splice(index, 1);
-        }
-      },
       onSubmit() {
         if(this.$refs.form.validate()) {
           this.$emit('save');
