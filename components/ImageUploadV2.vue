@@ -8,11 +8,11 @@
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
       <v-btn v-if="selectedImages.length" @click="selectAll" class="mb-2" small color="primary">Обрати всі</v-btn>
       <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
-      <draggable v-model="localImages" :class="{ 'grid-container': localImages.length > 0 }" draggable=".item">
-        <div class="item" v-for="(image, index) in localImages" :key="index">
+      <draggable v-model="localImages" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
+        <div class="item" v-for="(image, index) in images" :key="index">
           <v-hover v-slot:default="{ hover }">
             <v-img
-              :src="image.url"
+              :src="url(image)"
               :height="height(index)"
               :max-width="width(index)"
               :contain="index === 0 ? false : true"
@@ -43,12 +43,21 @@
 <script>
   export default {
     name: "ImageUploadV2",
-    props: ['images'],
+    props: {
+      images: { default: () => ([]) }
+    },
     data: () => ({
       localImages: [],
       selectedImages: []
     }),
     methods: {
+      imagesArray() {
+        if(this.localImages.length) {
+          return this.localImages;
+        } else {
+          return this.selectedImages;
+        }
+      },
       selectAll() {
         this.localImages.forEach(el => {
           el.checked = true
@@ -76,17 +85,26 @@
         return index === 0 ? '100%' : '110px'
       },
       contain(index) {
-        return index === 0 ? true : false
+        return index === 0 ? true : false;
       },
       onUploadImage(ev) {
         const arr = Array.from(ev.target.files);
+        const newArray = this.images.concat(arr);
+        this.$emit('input', ['images', [...newArray]]);
         arr.forEach((el, index) => {
           const obj = {};
-          obj.id = index;
+          obj._id = new Date().getUTCMilliseconds() + index;
           obj.url = window.URL.createObjectURL(el);
           obj.checked = false;
           this.localImages.push(obj);
         });
+      },
+      url(image) {
+        if(image.url) {
+          return `http://localhost:5050/${image.url}`
+        } else {
+          return window.URL.createObjectURL(image);
+        }
       }
     }
   }

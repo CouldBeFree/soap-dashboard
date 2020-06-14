@@ -9,6 +9,7 @@
         />
         <image-upload-v2
           :images="product.images"
+          @input="setDetailsParam"
         />
         <div class="d-flex justify-sm-end">
           <v-btn
@@ -67,7 +68,7 @@
         await this.saveProduct();
         this.snackbar = true;
         this.loading = false;
-      },
+      }
     },
     computed: {
       ...mapState('products', {
