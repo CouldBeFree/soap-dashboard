@@ -8,8 +8,8 @@
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
       <v-btn v-if="selectedImages.length" @click="selectAll" class="mb-2" small color="primary">Обрати всі</v-btn>
       <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
-      <draggable v-model="images" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
-        <div class="item" v-for="(image, index) in images" :key="index">
+      <draggable v-model="localImages" :class="{ 'grid-container': localImages.length > 0 }" draggable=".item">
+        <div class="item" v-for="(image, index) in localImages" :key="index">
           <v-hover v-slot:default="{ hover }">
             <v-img
               :src="image.url"
@@ -54,22 +54,23 @@
 <script>
   export default {
     name: "ImageUploadV2",
+    props: ['images'],
     data: () => ({
-      images: [],
+      localImages: [],
       selectedImages: []
     }),
     methods: {
       onSave() {
-        console.log(this.images);
+        console.log(this.localImages);
       },
       selectAll() {
-        this.images.forEach(el => {
+        this.localImages.forEach(el => {
           el.checked = true
         });
-        this.selectedImages = [...this.images];
+        this.selectedImages = [...this.localImages];
       },
       removeImages() {
-        this.images = this.images.filter((image) => {
+        this.localImages = this.localImages.filter((image) => {
           return !this.selectedImages.find((selectedImage) => {
             return image.id === selectedImage.id
           });
@@ -80,8 +81,8 @@
         return index === 0 ? '100%' : '110px';
       },
       changeHandler(index) {
-        this.images[index].checked = !this.images[index].checked;
-        this.selectedImages = this.images.filter((el) => {
+        this.localImages[index].checked = !this.localImages[index].checked;
+        this.selectedImages = this.localImages.filter((el) => {
           return el.checked === true;
         });
       },
@@ -98,7 +99,7 @@
           obj.id = index;
           obj.url = window.URL.createObjectURL(el);
           obj.checked = false;
-          this.images.push(obj);
+          this.localImages.push(obj);
         });
       }
     }

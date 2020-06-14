@@ -17,7 +17,6 @@
               <v-row>
                 <v-col cols="12" sm="12" class="ma-0 pa-0">
                   <v-text-field
-                    :value="product.name"
                     class="mt-0 pt-0"
                     label="Назва продукту*"
                     :rules="[v => !!v || 'Введіть назву продукту']"
@@ -27,7 +26,6 @@
                 </v-col>
                 <v-col cols="12" sm="6" class="ma-0 pr-1 pl-0 pt-0 pb-0">
                   <v-select
-                    :value="selectedCategory"
                     :items="category"
                     label="Категорія*"
                     :rules="[v => !!v || 'Виберіть категорію']"
@@ -39,7 +37,6 @@
                   <v-text-field
                     label="Ціна*"
                     type="number"
-                    :value="product.price"
                     :rules="[v => !!v || 'Веедіть ціну']"
                     required
                     @change="$emit('data', ['price', $event])"
@@ -118,19 +115,6 @@
       },
       categorySelect(category) {
         this.$emit('data', ['category', categoriesUkr[category]]);
-      }
-    },
-    computed: {
-      selectedCategory() {
-        return categoriesEng[this.product.category]
-      }
-    },
-    watch: {
-      images: function (val) {
-        this.$emit('data', ['images', [...val]])
-      },
-      image: function (val) {
-        this.$emit('data', ['thumb', [...val]])
       }
     }
   }

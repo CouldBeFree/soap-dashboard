@@ -33,7 +33,6 @@
       @data="setDetailsParam"
       @save="onSubmit"
       :loading="loading"
-      :product="details"
     />
     <v-snackbar
       v-model="snackbar"
@@ -119,6 +118,7 @@ export default {
     }
   },
   async mounted() {
+    this.setDetails({});
     await this.getProducts();
   },
   destroyed () {
@@ -126,7 +126,6 @@ export default {
   },
   computed: {
     ...mapState('products', {
-      details: state => state.details,
       error: state => state.error,
       success: state => state.success,
       products: state => state.products
