@@ -7,10 +7,12 @@
     <v-text-field
       label="Назва товару"
       :value="product.name"
+      @change="$emit('input',['name', $event])"
     />
     <v-select
       :items="category"
-      :value="selectedCategory"
+      :value="product.category"
+      @change="$emit('input',['category', $event])"
       label="Категорія"
     ></v-select>
     <v-text-field
@@ -18,6 +20,7 @@
       type="number"
       :value="product.price"
       :rules="[v => !!v || 'Веедіть ціну']"
+      @change="$emit('input',['price', $event])"
       required
     ></v-text-field>
     <span class="label">Опис товару</span>
@@ -27,15 +30,6 @@
 
 <script>
   import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-  const categoriesEng = {
-    'woman': 'жіноче',
-    'man': 'чоловіче',
-    'baby-soap': 'дитяче',
-    'bouquets': 'букети',
-    'kits': 'набори',
-    'natural': 'натуральне'
-  };
 
   export default {
     name: "InfoEditor",
@@ -47,11 +41,6 @@
     methods: {
       onEditorUpdate(val) {
         console.log(val);
-      }
-    },
-    computed: {
-      selectedCategory() {
-        return categoriesEng[this.product.category]
       }
     }
   }

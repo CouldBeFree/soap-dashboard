@@ -36,17 +36,6 @@
           <label class="upload-label" for="file">Завантажити зображення</label>
         </div>
       </draggable>
-      <div class="d-flex justify-sm-end">
-        <v-btn
-          @click="onSave"
-          right
-          color="primary"
-          medium
-          class="mt-4"
-        >
-          Save
-        </v-btn>
-      </div>
     </v-card>
   </div>
 </template>
@@ -60,9 +49,6 @@
       selectedImages: []
     }),
     methods: {
-      onSave() {
-        console.log(this.localImages);
-      },
       selectAll() {
         this.localImages.forEach(el => {
           el.checked = true
