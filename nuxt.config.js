@@ -30,6 +30,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/wysiwyg', ssr: false },
+    { src: '~/plugins/vuedgraggable', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

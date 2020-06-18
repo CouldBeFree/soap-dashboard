@@ -24,7 +24,6 @@
         <product
           :product="product"
           @remove="onRemove"
-          @edit="onEdit"
         >
         </product>
       </v-col>
@@ -34,13 +33,7 @@
       @data="setDetailsParam"
       @save="onSubmit"
       :loading="loading"
-      :product="details"
-    >
-      <template v-slot:title>
-        <p class="mb-0" v-if="details._id">Редагувати продукт</p>
-        <p class="mb-0" v-else>Створити новий продукт</p>
-      </template>
-    </product-form>
+    />
     <v-snackbar
       v-model="snackbar"
       :color="error ? 'error' : 'success'"
@@ -122,13 +115,10 @@ export default {
     onRemove(id) {
       this.productId = id;
       this.dialog = true;
-    },
-    async onEdit(id) {
-      await this.getProduct(id);
-      this.isOpen = true;
     }
   },
   async mounted() {
+    this.setDetails({});
     await this.getProducts();
   },
   destroyed () {
@@ -136,7 +126,6 @@ export default {
   },
   computed: {
     ...mapState('products', {
-      details: state => state.details,
       error: state => state.error,
       success: state => state.success,
       products: state => state.products
