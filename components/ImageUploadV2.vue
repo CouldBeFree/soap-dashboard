@@ -94,14 +94,14 @@
         arr.forEach((el, index) => {
           const obj = {};
           obj._id = new Date().getUTCMilliseconds() + index;
-          obj.url = window.URL.createObjectURL(el);
+          obj.path = window.URL.createObjectURL(el);
           obj.checked = false;
           this.localImages.push(obj);
         });
       },
       url(image) {
-        if(image.url) {
-          return `http://localhost:5050/${image.url}`
+        if(image.path) {
+          return `http://localhost:5050/${image.path}`
         } else {
           return window.URL.createObjectURL(image);
         }

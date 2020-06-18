@@ -30,7 +30,7 @@
                     label="Категорія*"
                     :rules="[v => !!v || 'Виберіть категорію']"
                     required
-                    @change="$emit('data', ['category', category])"
+                    @change="$emit('data', ['category', $event])"
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" class="ma-0 pl-1 pr-0 pt-0 pb-0">
@@ -72,14 +72,6 @@
 
 <script>
   import ImageUpload from "./ImageUpload";
-  const categoriesUkr = {
-    'жіноче': 'woman',
-    'чоловіче': 'man',
-    'дитяче': 'baby-soap',
-    'букети': 'bouquets',
-    'набори': 'kits',
-    'натуральне': 'natural'
-  };
 
   export default {
     name: "ProductForm",

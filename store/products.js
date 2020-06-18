@@ -38,7 +38,7 @@ export const actions = {
       fd.append('category', category);
       if(images){
         for(let i = 0; i < images.length; i++) {
-          if(images[i].url) {
+          if(images[i].path) {
             const stringifiedImage = JSON.stringify(images[i]);
             fd.append('images', stringifiedImage);
           } else {
