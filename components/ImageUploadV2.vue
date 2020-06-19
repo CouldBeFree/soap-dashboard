@@ -8,8 +8,12 @@
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
       <v-btn v-if="selectedImages.length" @click="selectAll" class="mb-2" small color="primary">Обрати всі</v-btn>
       <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
-      <draggable v-model="localImages" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
-        <div class="item" v-for="(image, index) in images" :key="index">
+      <draggable v-model="elements" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
+        <div
+          class="item"
+          v-for="(image, index) in images"
+          :key="index"
+        >
           <v-hover v-slot:default="{ hover }">
             <v-img
               :src="url(image)"
@@ -51,6 +55,9 @@
       selectedImages: []
     }),
     methods: {
+      onReorder(val) {
+        console.log(val);
+      },
       imagesArray() {
         if(this.localImages.length) {
           return this.localImages;
@@ -104,6 +111,16 @@
           return `http://localhost:5050/${image.path}`
         } else {
           return window.URL.createObjectURL(image);
+        }
+      }
+    },
+    computed: {
+      elements: {
+        get() {
+          return [...this.images]
+        },
+        set(val) {
+          this.$emit('input', ['images', [...val]]);
         }
       }
     }
