@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{elements}}
     <v-card
       class="pa-6 mt-6"
       outlined

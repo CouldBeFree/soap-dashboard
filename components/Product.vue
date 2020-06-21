@@ -50,7 +50,11 @@
     },
     computed: {
       url() {
-        return this.product.thumb && this.product.thumb.url ? `http://localhost:5050/${this.product.thumb.url}` : this.image
+        if (this.product.images && this.product.images[0].path) {
+          return `http://localhost:5050/${this.product.images[0].path}`;
+        } else {
+          return this.image;
+        }
       }
     }
   }

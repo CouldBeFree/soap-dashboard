@@ -47,10 +47,14 @@ export const actions = {
         }
       }
       if(state.details._id) {
-        await this.$axios.put(`/product/${state.details._id}`, fd, { headers: { 'content-type': 'multipart/form-data' } });
+        const product = await this.$axios.put(`/product/${state.details._id}`, fd, { headers: { 'content-type': 'multipart/form-data' } });
+        const { data } = product.data;
+        commit('setDetails', data);
         commit('setSuccess', 'Product edited');
       } else {
-        await this.$axios.post('/product', fd);
+        const products = await this.$axios.post('/product', fd);
+        const { data } = products.data;
+        commit('setProducts', data);
         commit('setSuccess', 'Product saved');
       }
     } catch ({ message }) {
