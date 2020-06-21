@@ -1,13 +1,14 @@
 <template>
   <div>
+    {{elements}}
     <v-card
       class="pa-6 mt-6"
       outlined
       light
     >
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
-      <v-btn v-if="selectedImages.length" @click="selectAll" class="mb-2" small color="primary">Обрати всі</v-btn>
-      <v-btn v-if="selectedImages.length" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
+      <v-btn @click="selectAll" class="mb-2" small color="primary">{{selectedAll ? 'Обрати всі' : 'Скасувати вибір'}}</v-btn>
+      <v-btn @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
       <draggable v-model="elements" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
         <div
           class="item"
@@ -25,7 +26,7 @@
                 <div class="checkbox-holder" :class="{ first: index === 0 }">
                   <v-checkbox
                     v-show="hover || image.checked"
-                    @change="changeHandler(index)"
+                    @change="changeHandler(index, $event)"
                     :input-value="image.checked"
                     dense
                     hide-details
@@ -51,60 +52,34 @@
       images: { default: () => ([]) }
     },
     data: () => ({
-      localImages: [],
-      selectedImages: []
+      selectedAll: true
     }),
     methods: {
-      onReorder(val) {
-        console.log(val);
-      },
-      imagesArray() {
-        if(this.localImages.length) {
-          return this.localImages;
-        } else {
-          return this.selectedImages;
-        }
-      },
       selectAll() {
-        this.localImages.forEach(el => {
-          el.checked = true
+        const array = [...this.elements];
+        array.forEach(el => {
+          el.checked = this.selectedAll;
         });
-        this.selectedImages = [...this.localImages];
+        this.elements = array;
+        this.selectedAll = !this.selectedAll;
       },
       removeImages() {
-        this.localImages = this.localImages.filter((image) => {
-          return !this.selectedImages.find((selectedImage) => {
-            return image.id === selectedImage.id
-          });
+        this.elements = this.elements.filter(el => {
+          return !el.checked
         });
-        this.selectedImages = [];
       },
       height(index) {
         return index === 0 ? '100%' : '110px';
       },
-      changeHandler(index) {
-        this.localImages[index].checked = !this.localImages[index].checked;
-        this.selectedImages = this.localImages.filter((el) => {
-          return el.checked === true;
-        });
+      changeHandler(index, event) {
+        this.elements[index].checked = event;
       },
       width(index) {
-        return index === 0 ? '100%' : '110px'
-      },
-      contain(index) {
-        return index === 0 ? true : false;
+        return index === 0 ? '100%' : '110px';
       },
       onUploadImage(ev) {
         const arr = Array.from(ev.target.files);
-        const newArray = this.images.concat(arr);
-        this.$emit('input', ['images', [...newArray]]);
-        arr.forEach((el, index) => {
-          const obj = {};
-          obj._id = new Date().getUTCMilliseconds() + index;
-          obj.path = window.URL.createObjectURL(el);
-          obj.checked = false;
-          this.localImages.push(obj);
-        });
+        this.elements = [...this.elements, ...arr];
       },
       url(image) {
         if(image.path) {
@@ -117,7 +92,13 @@
     computed: {
       elements: {
         get() {
-          return [...this.images]
+          const imagesCopy = [...this.images];
+          imagesCopy.forEach(el => {
+            if (!el.checked) {
+              el.checked = false
+            }
+          });
+          return [...imagesCopy]
         },
         set(val) {
           this.$emit('input', ['images', [...val]]);
