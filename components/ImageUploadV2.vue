@@ -1,5 +1,7 @@
 <template>
   <div>
+    {{elements}}
+    <h5>Every {{isVisible}}</h5>
     <v-card
       class="pa-6 mt-6"
       outlined
@@ -51,7 +53,8 @@
       images: { default: () => ([]) }
     },
     data: () => ({
-      selectedAll: true
+      selectedAll: true,
+      isVisibleButton: false
     }),
     methods: {
       selectAll() {
@@ -59,19 +62,22 @@
         array.forEach(el => {
           el.checked = this.selectedAll;
         });
-        this.elements = array;
+        this.$emit('input', ['images', [...array]]);
         this.selectedAll = !this.selectedAll;
       },
       removeImages() {
-        this.elements = this.elements.filter(el => {
+        const newArray = this.elements.filter(el => {
           return !el.checked
         });
+        this.$emit('input', ['images', [...newArray]]);
       },
       height(index) {
         return index === 0 ? '100%' : '110px';
       },
       changeHandler(index, event) {
-        this.elements[index].checked = event;
+        const newArray = [...this.elements];
+        newArray[index].checked = event;
+        this.$emit('input', ['images', [...newArray]]);
       },
       width(index) {
         return index === 0 ? '100%' : '110px';
@@ -101,6 +107,13 @@
         },
         set(val) {
           this.$emit('input', ['images', [...val]]);
+        }
+      },
+      isVisible: {
+        get() {
+          this.images.every((el) => {
+            return el.checked
+          })
         }
       }
     }
