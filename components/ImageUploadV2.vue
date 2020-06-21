@@ -1,17 +1,20 @@
 <template>
   <div>
-    {{elements}}
-    <h5>Every {{isVisible}}</h5>
     <v-card
       class="pa-6 mt-6"
       outlined
       light
     >
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
-      <v-btn @click="selectAll" class="mb-2" small color="primary">{{selectedAll ? 'Обрати всі' : 'Скасувати вибір'}}</v-btn>
-      <v-btn @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
-      <draggable v-model="elements" :class="{ 'grid-container': images.length > 0 }" draggable=".item">
+      <v-btn @click="selectAll" class="mb-2" small color="primary">{{!isVisible ? 'Обрати всі' : 'Скасувати вибір'}}</v-btn>
+      <v-btn v-if="isVisible" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
+      <draggable
+        v-model="elements"
+        :class="{ 'grid-container': images.length > 0 }"
+        draggable=".item"
+      >
         <div
+          ref="item"
           class="item"
           v-for="(image, index) in images"
           :key="index"
@@ -56,14 +59,15 @@
       selectedAll: true,
       isVisibleButton: false
     }),
+    mounted() {
+    },
     methods: {
       selectAll() {
         const array = [...this.elements];
         array.forEach(el => {
-          el.checked = this.selectedAll;
+          el.checked = !this.isVisible;
         });
         this.$emit('input', ['images', [...array]]);
-        this.selectedAll = !this.selectedAll;
       },
       removeImages() {
         const newArray = this.elements.filter(el => {
@@ -109,11 +113,16 @@
           this.$emit('input', ['images', [...val]]);
         }
       },
+      selectedImages: {
+        get() {
+          return this.images.filter((el) => {
+            if (el.checked === true) return el;
+          });
+        }
+      },
       isVisible: {
         get() {
-          this.images.every((el) => {
-            return el.checked
-          })
+          return !!this.selectedImages.length;
         }
       }
     }
@@ -148,7 +157,7 @@
 
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(8,1fr);
     grid-gap: 15px;
     min-height: 220px;
   }
@@ -173,6 +182,7 @@
 
   .grid-container .item:not(:first-child) {
     height: 110px;
+    max-width: 205px;
   }
 
   .upload-button {
