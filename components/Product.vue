@@ -50,7 +50,7 @@
     },
     computed: {
       url() {
-        if (this.product.images && this.product.images[0].path) {
+        if (this.product.images && this.product.images[0] && this.product.images[0].path) {
           return `http://localhost:5050/${this.product.images[0].path}`;
         } else {
           return this.image;

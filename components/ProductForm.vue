@@ -54,7 +54,7 @@
             text
             @click="onClose"
           >
-            Close
+            Відмінити
           </v-btn>
           <v-btn
             color="blue darken-1"
@@ -62,7 +62,7 @@
             @click="onSubmit"
             :loading="loading"
           >
-            Save
+            Зберегети
           </v-btn>
         </v-card-actions>
       </v-card>

@@ -24,7 +24,11 @@
       required
     ></v-text-field>
     <span class="label">Опис товару</span>
-    <ckeditor :editor="editor" @input="onEditorUpdate"></ckeditor>
+    <ckeditor
+      :editor="editor"
+      :value="product.description"
+      @input="$emit('input', ['description', $event])"
+    ></ckeditor>
   </v-card>
 </template>
 
@@ -37,12 +41,7 @@
     data: () => ({
       category: ['жіноче', 'чоловіче', 'дитяче', 'букети', 'набори', 'натуральне'],
       editor: ClassicEditor
-    }),
-    methods: {
-      onEditorUpdate(val) {
-        console.log(val);
-      }
-    }
+    })
   }
 </script>
 

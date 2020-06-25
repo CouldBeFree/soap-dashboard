@@ -31,11 +31,11 @@ export const actions = {
     commit('setError', false);
     try {
       const fd = new FormData();
-      const { images, thumb, price, category, name } = state.details;
-      fd.append('thumb', thumb);
+      const { images, price, category, name, description } = state.details;
       fd.append('name', name);
       fd.append('price', price);
       fd.append('category', category);
+      fd.append('description', description);
       if(images){
         for(let i = 0; i < images.length; i++) {
           if(images[i].path) {

@@ -52,15 +52,11 @@
 <script>
   export default {
     name: "ImageUploadV2",
-    props: {
-      images: { default: () => ([]) }
-    },
     data: () => ({
       selectedAll: true,
-      isVisibleButton: false
+      isVisibleButton: false,
+      images: []
     }),
-    mounted() {
-    },
     methods: {
       selectAll() {
         const array = [...this.elements];
@@ -115,14 +111,14 @@
       },
       selectedImages: {
         get() {
-          return this.images.filter((el) => {
+          return this.images?.filter((el) => {
             if (el.checked === true) return el;
           });
         }
       },
       isVisible: {
         get() {
-          return !!this.selectedImages.length;
+          return !!this.selectedImages?.length;
         }
       }
     }

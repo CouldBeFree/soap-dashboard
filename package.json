@@ -20,6 +20,7 @@
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.10.3",
     "@nuxtjs/vuetify": "^1.0.0"
   }
 }
