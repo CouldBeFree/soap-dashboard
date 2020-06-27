@@ -31,6 +31,7 @@ export const actions = {
       if(data.success){
         commit('setUser', data.user);
         commit('setToken', data.token);
+        localStorage.setItem('soap', data.token);
       } else {
         commit('setError', data.error);
       }

@@ -82,6 +82,7 @@ import ProductForm from "../components/ProductForm";
 import Product from '../components/Product';
 
 export default {
+  middleware: ['auth'],
   data: () => ({
     isOpen: false,
     loading: false,

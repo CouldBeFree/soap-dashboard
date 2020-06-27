@@ -49,6 +49,7 @@
 
   export default {
     name: "product",
+    middleware: ['auth'],
     data: () => ({
       loading: false,
       snackbar: false
