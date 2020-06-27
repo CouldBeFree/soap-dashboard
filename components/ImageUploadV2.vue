@@ -35,6 +35,7 @@
               :src="url(image)"
               :height="height(index)"
               :max-width="width(index)"
+              @click="imageSelect(index)"
             >
               <v-expand-transition>
                 <div class="checkbox-holder" :class="{ first: index === 0 }">
@@ -56,6 +57,14 @@
         </div>
       </draggable>
     </v-card>
+    <no-ssr>
+      <LightBox
+        :media="elements"
+        :showLightBox="false"
+        :showThumbs="false"
+        ref="lightbox"
+      />
+    </no-ssr>
   </div>
 </template>
 
@@ -74,6 +83,9 @@
           el.checked = !this.isVisible;
         });
         this.$emit('input', ['images', [...array]]);
+      },
+      imageSelect(index) {
+        this.$refs.lightbox.showImage(index);
       },
       removeImages() {
         const newArray = this.elements.filter(el => {
@@ -119,9 +131,12 @@
             imagesCopy.forEach(el => {
               if (!el.checked) {
                 el.checked = false
+                el.src = `http://localhost:5050/${el.path}`;
               }
             });
             return [...imagesCopy];
+          } else {
+            return []
           }
         },
         set(val) {

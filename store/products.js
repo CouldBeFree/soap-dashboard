@@ -31,11 +31,12 @@ export const actions = {
     commit('setError', false);
     try {
       const fd = new FormData();
-      const { images, price, category, name, description } = state.details;
+      const { images, price, category, name, description, compare_at_price } = state.details;
       fd.append('name', name);
       fd.append('price', price);
       fd.append('category', category);
       fd.append('description', description);
+      fd.append('compare_at_price', compare_at_price);
       if(images){
         for(let i = 0; i < images.length; i++) {
           if(images[i].path) {
@@ -50,12 +51,12 @@ export const actions = {
         const product = await this.$axios.put(`/product/${state.details._id}`, fd, { headers: { 'content-type': 'multipart/form-data' } });
         const { data } = product.data;
         commit('setDetails', data);
-        commit('setSuccess', 'Product edited');
+        commit('setSuccess', 'Продукт відредаговано');
       } else {
         const products = await this.$axios.post('/product', fd);
         const { data } = products.data;
         commit('setProducts', data);
-        commit('setSuccess', 'Product saved');
+        commit('setSuccess', 'Продукт збережено');
       }
     } catch ({ message }) {
       console.error('message', message);

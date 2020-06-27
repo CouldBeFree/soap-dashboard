@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col md="2" lg="2"/>
-      <v-col md="8" lg="9">
+      <v-col md="8" lg="8">
         <info-editor
           :product="product"
           @input="setDetailsParam"

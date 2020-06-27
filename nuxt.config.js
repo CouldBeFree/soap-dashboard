@@ -25,13 +25,15 @@ export default {
   ** Global CSS
   */
   css: [
+    'vue-image-lightbox/dist/vue-image-lightbox.min.css'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
     { src: '~/plugins/wysiwyg', ssr: false },
-    { src: '~/plugins/vuedgraggable', ssr: false }
+    { src: '~/plugins/vuedgraggable', ssr: false },
+    { src: '~/plugins/lightbox', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

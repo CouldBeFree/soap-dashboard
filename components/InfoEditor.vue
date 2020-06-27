@@ -19,9 +19,15 @@
       label="Ціна"
       type="number"
       :value="product.price"
-      :rules="[v => !!v || 'Веедіть ціну']"
+      :rules="[v => !!v || 'Введіть ціну']"
       @change="$emit('input',['price', $event])"
       required
+    ></v-text-field>
+    <v-text-field
+      label="Стара Ціна"
+      type="number"
+      :value="product.compare_at_price"
+      @change="$emit('input',['compare_at_price', $event])"
     ></v-text-field>
     <span class="label">Опис товару</span>
     <ckeditor
