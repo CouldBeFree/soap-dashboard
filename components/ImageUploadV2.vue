@@ -6,11 +6,22 @@
       light
     >
       <v-card-title class="pa-0 mb-1">Картинки товару</v-card-title>
-      <v-btn @click="selectAll" class="mb-2" small color="primary">{{!isVisible ? 'Обрати всі' : 'Скасувати вибір'}}</v-btn>
-      <v-btn v-if="isVisible" @click="removeImages" class="mb-2" small color="error">Видалити</v-btn>
+      <v-btn
+        @click="selectAll"
+        class="mb-2" small color="primary"
+        v-if="isImages">
+        {{!isVisible ? 'Обрати всі' : 'Скасувати вибір'}}
+      </v-btn>
+      <v-btn
+        v-if="isVisible"
+        @click="removeImages"
+        class="mb-2"
+        small
+        color="error"
+      >Видалити</v-btn>
       <draggable
         v-model="elements"
-        :class="{ 'grid-container': images.length > 0 }"
+        :class="{ 'grid-container': isImages }"
         draggable=".item"
       >
         <div
@@ -24,7 +35,6 @@
               :src="url(image)"
               :height="height(index)"
               :max-width="width(index)"
-              :contain="index === 0 ? false : true"
             >
               <v-expand-transition>
                 <div class="checkbox-holder" :class="{ first: index === 0 }">
@@ -52,10 +62,10 @@
 <script>
   export default {
     name: "ImageUploadV2",
+    props: ['images'],
     data: () => ({
       selectedAll: true,
-      isVisibleButton: false,
-      images: []
+      isVisibleButton: false
     }),
     methods: {
       selectAll() {
@@ -83,8 +93,14 @@
         return index === 0 ? '100%' : '110px';
       },
       onUploadImage(ev) {
-        const arr = Array.from(ev.target.files);
-        this.elements = [...this.elements, ...arr];
+        const files = Array.from(ev.target.files);
+        let images = [];
+        if (this.images) {
+          images = [...this.images, ...files];
+        } else {
+          images = [...files];
+        }
+        this.$emit('input', ['images', [...images]]);
       },
       url(image) {
         if(image.path) {
@@ -97,13 +113,16 @@
     computed: {
       elements: {
         get() {
-          const imagesCopy = [...this.images];
-          imagesCopy.forEach(el => {
-            if (!el.checked) {
-              el.checked = false
-            }
-          });
-          return [...imagesCopy]
+          let imagesCopy;
+          if (this.images) {
+            imagesCopy = [...this.images];
+            imagesCopy.forEach(el => {
+              if (!el.checked) {
+                el.checked = false
+              }
+            });
+            return [...imagesCopy];
+          }
         },
         set(val) {
           this.$emit('input', ['images', [...val]]);
@@ -120,6 +139,9 @@
         get() {
           return !!this.selectedImages?.length;
         }
+      },
+      isImages() {
+        return this.images && this.images.length > 0
       }
     }
   }
