@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row class="align">
       <v-col md="2" lg="4"/>
       <v-col md="8" lg="4">
         <v-form

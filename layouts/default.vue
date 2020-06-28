@@ -14,6 +14,16 @@
         <v-toolbar-title>
           <nuxt-link :to="'/'" class="link">Soap dashboard</nuxt-link>
         </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          v-if="isUser"
+          icon
+          @click="logOut"
+        >
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -55,12 +65,29 @@
 </template>
 
 <script>
+  import { mapState, mapMutations } from 'vuex';
+
   export default {
-    data () {
-      return {
-        drawer: false,
-        height: '100%',
-        color: 'info'
+    data: () => ({
+      drawer: false,
+      height: '100%',
+      color: 'info'
+    }),
+    computed: {
+      ...mapState('auth', {
+        user: state => state.user
+      }),
+      isUser() {
+        return Object.keys(this.user).length != 0;
+      }
+    },
+    methods: {
+      ...mapMutations('auth', ['setUser', 'setToken']),
+      logOut() {
+        localStorage.removeItem('soap');
+        this.setUser({});
+        this.setToken('');
+        this.$router.push('/login');
       }
     }
   }
