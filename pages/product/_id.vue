@@ -69,9 +69,6 @@
         await this.saveProduct();
         this.snackbar = true;
         this.loading = false;
-      },
-      onImagesUpdate(images) {
-        console.log(images);
       }
     },
     computed: {

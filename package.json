@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.10.3",
+    "@mdi/font": "^5.3.45",
     "@nuxtjs/vuetify": "^1.0.0"
   }
 }

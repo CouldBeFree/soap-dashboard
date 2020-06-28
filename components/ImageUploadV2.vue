@@ -32,6 +32,7 @@
         >
           <v-hover v-slot:default="{ hover }">
             <v-img
+              class="d-flex align-center"
               :src="url(image)"
               :height="height(index)"
               :max-width="width(index)"
@@ -46,6 +47,12 @@
                     dense
                     hide-details
                   ></v-checkbox>
+                </div>
+              </v-expand-transition>
+              <v-expand-transition>
+                <div class="icon-holder">
+                  <v-icon x-large v-show="index === 0 && hover" color="white">mdi-arrow-expand</v-icon>
+                  <v-icon v-show="index != 0 && hover" color="white">mdi-arrow-expand</v-icon>
                 </div>
               </v-expand-transition>
             </v-img>
@@ -163,6 +170,11 @@
 </script>
 
 <style scoped>
+  .icon-holder {
+    display: flex;
+    justify-content: center;
+  }
+
   .label {
     font-size: 13px;
     color: rgba(0, 0, 0, 0.6);
@@ -211,6 +223,7 @@
     grid-row-end: span 2;
     height: 100%;
     max-height: 235px;
+    overflow: hidden;
   }
 
   .grid-container .item:not(:first-child) {

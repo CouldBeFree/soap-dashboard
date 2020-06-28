@@ -32,6 +32,7 @@ export const actions = {
         commit('setUser', data.user);
         commit('setToken', data.token);
         localStorage.setItem('soap', data.token);
+        this.$router.push('/');
       } else {
         commit('setError', data.error);
       }

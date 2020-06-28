@@ -36,11 +36,18 @@
       </v-col>
       <v-col md="2" lg="4"/>
     </v-row>
+    <v-snackbar
+      v-model="isSnackBarOpen"
+      :timeout="timeout"
+      color="red"
+    >
+      {{ error }}
+    </v-snackbar>
   </div>
 </template>
 
 <script>
-  import { mapActions, mapMutations } from 'vuex';
+  import { mapActions, mapMutations, mapState } from 'vuex';
 
   export default {
     name: "login",
@@ -53,20 +60,36 @@
       ],
       passwordRules: [
         v => !!v || "Введіть пароль"
-      ]
+      ],
+      timeout: 4000
     }),
+    destroyed() {
+      this.setError('');
+    },
+    computed: {
+      ...mapState('auth', {
+        error: state => state.error
+      }),
+      isSnackBarOpen:{
+        get() {
+          return !!this.error
+        },
+        set(val) {
+          this.setError(val);
+        }
+      }
+    },
     methods: {
       ...mapActions('auth', ['postUserData']),
       ...mapMutations('auth', ['setSubmitType', 'setError']),
       async onRegister() {
-        const user = {};
+        const userData = {};
         const valid = this.$refs.form.validate();
         if (valid) {
           this.setSubmitType('login');
-          user.email = this.email;
-          user.password = this.password;
-          const user = await this.postUserData(user);
-          console.log(user);
+          userData.email = this.email;
+          userData.password = this.password;
+          await this.postUserData(userData);
         }
       }
     }
