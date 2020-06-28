@@ -25,9 +25,10 @@
           ></v-text-field>
 
           <v-btn
+            :loading="loading"
             color="success"
             class="mr-4 mt-3"
-            @click="onRegister"
+            @click="onLogin"
           >
             Залогінитись
           </v-btn>
@@ -61,7 +62,8 @@
       passwordRules: [
         v => !!v || "Введіть пароль"
       ],
-      timeout: 4000
+      timeout: 4000,
+      loading: false
     }),
     destroyed() {
       this.setError('');
@@ -82,14 +84,16 @@
     methods: {
       ...mapActions('auth', ['postUserData']),
       ...mapMutations('auth', ['setSubmitType', 'setError']),
-      async onRegister() {
+      async onLogin() {
         const userData = {};
         const valid = this.$refs.form.validate();
         if (valid) {
           this.setSubmitType('login');
           userData.email = this.email;
           userData.password = this.password;
+          this.loading = true;
           await this.postUserData(userData);
+          this.loading = false;
         }
       }
     }

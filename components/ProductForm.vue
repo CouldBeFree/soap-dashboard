@@ -71,14 +71,10 @@
 </template>
 
 <script>
-  import ImageUpload from "./ImageUpload";
 
   export default {
     name: "ProductForm",
     props: ['value', 'loading', 'product'],
-    components: {
-      ImageUpload
-    },
     data: () => ({
       dialog: false,
       category: ['жіноче', 'чоловіче', 'дитяче', 'букети', 'набори', 'натуральне']

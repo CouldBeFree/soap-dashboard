@@ -7,7 +7,7 @@
           :product="product"
           @input="setDetailsParam"
         />
-        <image-upload-v2
+        <image-upload
           :images="product.images"
           @input="setDetailsParam"
         />
@@ -44,7 +44,7 @@
 
 <script>
   import { mapState, mapActions, mapMutations } from 'vuex';
-  import ImageUploadV2 from "../../components/ImageUploadV2";
+  import ImageUpload from "../../components/ImageUpload";
   import InfoEditor from "../../components/InfoEditor";
 
   export default {
@@ -55,7 +55,7 @@
       snackbar: false
     }),
     components: {
-      ImageUploadV2,
+      ImageUpload,
       InfoEditor
     },
     async mounted() {
